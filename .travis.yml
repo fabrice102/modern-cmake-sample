@@ -6,6 +6,7 @@ matrix:
       dist: xenial
       addons:
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
             - sourceline: 'ppa:mhier/libboost-latest'
@@ -19,6 +20,7 @@ matrix:
       dist: xenial
       addons:
         apt:
+          update: true
           sources:
             - llvm-toolchain-xenial-6.0
             - sourceline: 'ppa:mhier/libboost-latest'

@@ -6,14 +6,13 @@ matrix:
       dist: xenial
       addons:
         apt:
-          update: true
           sources:
             - ubuntu-toolchain-r-test
             - sourceline: 'ppa:mhier/libboost-latest'
           packages:
             - g++-7 
             - rapidjson-dev 
-            - libboost
+            - libboost1.67-dev
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - os: linux
@@ -27,7 +26,7 @@ matrix:
           packages:
             - clang-6.0 
             - rapidjson-dev
-            - libboost
+            - libboost1.67-dev
       env:
         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
     - os: osx

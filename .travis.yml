@@ -1,0 +1,18 @@
+matrix:
+  include:
+    # works on Precise and Trusty
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7 rapidjson-dev
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+before_install:
+  - eval "${MATRIX_EVAL}"
+
+script: mkdir cmake-build && cd cmake-build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && make test

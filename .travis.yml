@@ -8,25 +8,20 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - sourceline: 'ppa:mhier/libboost-latest'
           packages:
             - g++-7 
             - rapidjson-dev 
-            - libboost1.67-dev
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - os: linux
       dist: xenial
       addons:
         apt:
-          update: true
           sources:
             - llvm-toolchain-xenial-6.0
-            - sourceline: 'ppa:mhier/libboost-latest'
           packages:
             - clang-6.0 
             - rapidjson-dev
-            - libboost1.67-dev
       env:
         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
     - os: osx
@@ -42,9 +37,14 @@ matrix:
 before_install:
   - eval "${MATRIX_EVAL}"
 
-before_script:
-  - cd libjsonutils
+install:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget -O boost_1_64_0.tar.gz http://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.tar.gz/download; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tar xzvf boost_1_64_0.tar.gz; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then cd boost_1_64_0/; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./bootstrap.sh --with-libraries=regex; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./b2; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo ./b2 install; fi
 
 script: 
-  - mkdir cmake-build-debug && cd cmake-build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && make test
-  - cd .. && mkdir cmake-build-relwithdebinfo && cd cmake-build-relwithdebinfo && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .. && make && make test
+  - cd "$TRAVIS_BUILD_DIR/libjsonutils" && mkdir cmake-build-debug && cd cmake-build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && make test
+  - cd "$TRAVIS_BUILD_DIR/libjsonutils" && mkdir cmake-build-relwithdebinfo && cd cmake-build-relwithdebinfo && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .. && make && make test

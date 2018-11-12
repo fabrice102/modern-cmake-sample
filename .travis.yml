@@ -12,7 +12,6 @@ matrix:
             - g++-7 rapidjson-dev
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && BUILD_TYPE=Debug"
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && BUILD_TYPE=RelWithDebInfo"
     - os: linux
       dist: xenial
       addons:
@@ -23,14 +22,12 @@ matrix:
             - clang-6.0
       env:
         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0 && BUILD_TYPE=Debug"
-        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0 && BUILD_TYPE=RelWithDebInfo"
     - os: osx
       osx_image: xcode10.1
       env:
         - MATRIX_EVAL="BUILD_TYPE=Debug"
-        - MATRIX_EVAL="BUILD_TYPE=RelWithDebInfo"
 
 before_install:
   - eval "${MATRIX_EVAL}"
 
-script: cd libjsonutils && mkdir cmake-build && cd cmake-build && cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"" .. && make && make test
+script: cd libjsonutils && mkdir cmake-build && cd cmake-build && cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" .. && make && make test

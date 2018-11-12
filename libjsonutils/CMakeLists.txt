@@ -97,4 +97,5 @@ export(EXPORT jsonutils-targets FILE ${CMAKE_CURRENT_BINARY_DIR}/JSONUtilsTarget
 #Register package in user's package registry
 export(PACKAGE JSONUtils)
 
+enable_testing()
 add_subdirectory(test)

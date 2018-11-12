@@ -8,8 +8,11 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
+            - sourceline: 'ppa:mhier/libboost-latest'
           packages:
-            - g++-7 rapidjson-dev libboost-regex-dev
+            - g++-7 
+            - rapidjson-dev 
+            - libboost
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - os: linux
@@ -18,8 +21,11 @@ matrix:
         apt:
           sources:
             - llvm-toolchain-xenial-6.0
+            - sourceline: 'ppa:mhier/libboost-latest'
           packages:
-            - clang-6.0 rapidjson-dev libboost-regex-dev
+            - clang-6.0 
+            - rapidjson-dev
+            - libboost
       env:
         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
     - os: osx
@@ -27,7 +33,8 @@ matrix:
       addons:
         homebrew:
           packages:
-            - boost rapidjson
+            - boost 
+            - rapidjson
       env:
         - MATRIX_EVAL=""
 

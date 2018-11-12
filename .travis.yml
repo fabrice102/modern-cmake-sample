@@ -12,7 +12,7 @@ matrix:
             - g++-7 
             - rapidjson-dev 
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && BOOST_BOOTSTRAP_TOOLSET=gcc"
     - os: linux
       dist: xenial
       addons:
@@ -23,7 +23,7 @@ matrix:
             - clang-6.0 
             - rapidjson-dev
       env:
-        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0 && BOOST_BOOTSTRAP_TOOLSET=clang"
     - os: osx
       osx_image: xcode10.1
       addons:
@@ -41,8 +41,8 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget -O boost_1_64_0.tar.gz http://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.tar.gz/download; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tar xzf boost_1_64_0.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then cd boost_1_64_0/; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./bootstrap.sh --with-libraries=regex; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./b2; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./bootstrap.sh --with-libraries=regex --with-toolset="${BOOST_BOOTSTRAP_TOOLSET}"; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./b2 toolset="${CC}"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo ./b2 install; fi
 
 script: 

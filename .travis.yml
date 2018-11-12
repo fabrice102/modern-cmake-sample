@@ -38,12 +38,13 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 install:
+  - if [ "CC" = "clang-6.0 "]; then sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-6.0 1000 && sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-6.0 1000; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget -O boost_1_64_0.tar.gz http://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.tar.gz/download; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tar xzf boost_1_64_0.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then cd boost_1_64_0/; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./bootstrap.sh --with-libraries=regex --with-toolset="${BOOST_BOOTSTRAP_TOOLSET}"; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./b2 toolset="${CC}"; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo ./b2 toolset="${CC}" install; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./b2 -j 2 -d 0 toolset="${CC}"; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo ./b2 -j 2 -d 0 toolset="${CC}" install; fi
 
 script: 
   - cd "$TRAVIS_BUILD_DIR/libjsonutils" && mkdir cmake-build-debug && cd cmake-build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && make test

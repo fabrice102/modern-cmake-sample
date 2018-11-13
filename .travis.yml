@@ -12,7 +12,7 @@ matrix:
             - g++-7 
             - rapidjson-dev 
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && BOOST_BOOTSTRAP_TOOLSET=gcc"
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && BOOST_BOOTSTRAP_TOOLSET=gcc && BOOST_B2_TOOLSET=gcc-7"
     - os: linux
       dist: xenial
       addons:
@@ -23,7 +23,7 @@ matrix:
             - clang-6.0 
             - rapidjson-dev
       env:
-        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0 && BOOST_BOOTSTRAP_TOOLSET=clang"
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0 && BOOST_BOOTSTRAP_TOOLSET=clang && BOOST_B2_TOOLSET=clang"
     - os: osx
       osx_image: xcode10.1
       addons:
@@ -38,13 +38,13 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 install:
-  - if [ "CC" = "clang-6.0 "]; then sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang && sudo ln -s /usr/bin/clang++-6.0 /usr/bin/clang++ && sudo ln -s /usr/bin/llc-6.0 /usr/bin/llc; fi
+  - if [ "CC" = "clang-6.0" ]; then sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang && sudo ln -s /usr/bin/clang++-6.0 /usr/bin/clang++ && sudo ln -s /usr/bin/llc-6.0 /usr/bin/llc; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget -O boost_1_64_0.tar.gz http://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.tar.gz/download; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tar xzf boost_1_64_0.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then cd boost_1_64_0/; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./bootstrap.sh --with-libraries=regex --with-toolset="${BOOST_BOOTSTRAP_TOOLSET}"; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./b2 -j 2 -d 0 toolset="${CC}"; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo ./b2 -j 2 -d 0 toolset="${CC}" install; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./b2 -j 2 -d 0 toolset="${BOOST_B2_TOOLSET}"; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo ./b2 -j 2 -d 0 toolset="${BOOST_B2_TOOLSET}" install; fi
 
 script: 
   - cd "$TRAVIS_BUILD_DIR/libjsonutils" && mkdir cmake-build-debug && cd cmake-build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && make test

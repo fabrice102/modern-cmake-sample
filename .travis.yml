@@ -38,7 +38,7 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 install:
-  - if [ "CC" = "clang-6.0" ]; then sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang && sudo ln -s /usr/bin/clang++-6.0 /usr/bin/clang++ && sudo ln -s /usr/bin/llc-6.0 /usr/bin/llc; fi
+  - if [ "$CC" = "clang-6.0" ]; then sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang && sudo ln -s /usr/bin/clang++-6.0 /usr/bin/clang++ && sudo ln -s /usr/bin/llc-6.0 /usr/bin/llc; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget -O boost_1_64_0.tar.gz http://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.tar.gz/download; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tar xzf boost_1_64_0.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then cd boost_1_64_0/; fi
